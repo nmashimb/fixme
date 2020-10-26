@@ -6,11 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="routertwo" />
         <module name="fixme-router" />
-        <module name="fixme-routertwo" />
         <module name="fixme-broker" />
         <module name="fixme-market" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="fixme-routertwo" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

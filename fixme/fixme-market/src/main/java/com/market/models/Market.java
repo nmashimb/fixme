@@ -9,7 +9,9 @@ import java.util.*;
 public class Market
 {
     private static BufferedReader input = null;
-
+    private static int myID = 0;
+    private static String msg = "initial";
+    
     public Market() throws Exception {
         InetSocketAddress addr = new InetSocketAddress(InetAddress.getByName("localhost"), 5001);
         Selector selector = Selector.open();
@@ -42,6 +44,12 @@ public class Market
             if (!connected) {
                 return true;
             }
+            SocketChannel sc = (SocketChannel) key.channel();
+            ByteBuffer bb = ByteBuffer.allocate(1024);
+            sc.read(bb);
+            String result = new String(bb.array()).trim();
+            setID(Integer.parseInt(result));
+            System.out.println("connected to port 5001?id: "+result);
         }
         if (key.isReadable()) {
             SocketChannel sc = (SocketChannel) key.channel();
@@ -51,14 +59,17 @@ public class Market
             System.out.println("Message received from MarketServer: " + result);
         }
         if (key.isWritable()) {
-            System.out.print("Type a message (type quit to stop): ");
+            System.out.print("Type a message (type R to refresh, q to stop): ");
             String msg = input.readLine();
-            if (msg.equalsIgnoreCase("quit")) {
-                return true;
+            if (!msg.trim().toLowerCase().matches("r")){
+                msg = getID()+":"+msg;
+                SocketChannel sc = (SocketChannel) key.channel();
+                ByteBuffer bb = ByteBuffer.wrap(msg.getBytes());
+                sc.write(bb);
+                if (msg.equalsIgnoreCase("q")) {
+                    return true;
+                }
             }
-            SocketChannel sc = (SocketChannel) key.channel();
-            ByteBuffer bb = ByteBuffer.wrap(msg.getBytes());
-            sc.write(bb);
         }
         return false;
     }
@@ -75,5 +86,24 @@ public class Market
             return false;
         }
         return true;
+    }
+
+    //Set methods
+    public static void setID(int id){
+        myID = id;
+        System.out.println("ID set! "+id);
+    }
+
+    public static void setMessage(String id){
+        msg = id;
+    }
+
+    //get methods
+    public static int getID(){
+        return myID;
+    }
+
+    public static String getMessage(){
+        return msg;
     }
 }

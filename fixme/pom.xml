@@ -12,7 +12,6 @@
         <module>fixme-router</module>
         <module>fixme-broker</module>
         <module>fixme-market</module>
-        <module>fixme-routertwo</module>
     </modules>
 
 

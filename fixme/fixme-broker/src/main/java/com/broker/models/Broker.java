@@ -45,6 +45,12 @@ public class Broker
             if (!connected) {
                 return true;
             }
+            SocketChannel sc = (SocketChannel) key.channel();
+            ByteBuffer bb = ByteBuffer.allocate(1024);
+            sc.read(bb);
+            String result = new String(bb.array()).trim();
+            setID(Integer.parseInt(result));
+            System.out.println("connected to port 5000?id: "+result);
         }
         if (key.isReadable()) {
             SocketChannel sc = (SocketChannel) key.channel();
@@ -52,19 +58,19 @@ public class Broker
             sc.read(bb);
             String result = new String(bb.array()).trim();
             System.out.println("Message received from BrokerServer: " + result);
-            int id = Integer.parseInt(result);
-            setUniqueID(id);
-            System.out.println("My assigned ID: "+getMyID());
         }
         if (key.isWritable()) {
-            System.out.print("Type a message (type quit to stop): ");
+            System.out.print("Type a message (type R to refresh, q to stop): ");
             String msg = input.readLine();
-            if (msg.equalsIgnoreCase("quit")) {
-                return true;
+            if (!msg.trim().toLowerCase().matches("r")){
+                msg = getID()+":"+msg;
+                SocketChannel sc = (SocketChannel) key.channel();
+                ByteBuffer bb = ByteBuffer.wrap(msg.getBytes());
+                sc.write(bb);
+                if (msg.equalsIgnoreCase("q")) {
+                    return true;
+                }
             }
-            SocketChannel sc = (SocketChannel) key.channel();
-            ByteBuffer bb = ByteBuffer.wrap(msg.getBytes());
-            sc.write(bb);
         }
         return false;
     }
@@ -85,13 +91,14 @@ public class Broker
     }
 
     //Setters
-    public static void setUniqueID(int id)
+    public static void setID(int id)
     {
         myID = id;
+        System.out.println("ID set! "+id);
     }
 
     //Getters
-    public static int getMyID()
+    public static int getID()
     {
         return myID;
     }
