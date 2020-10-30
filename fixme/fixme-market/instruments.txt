@@ -1,0 +1,4 @@
+guitar 100
+paino  100
+flute  100
+drums  100

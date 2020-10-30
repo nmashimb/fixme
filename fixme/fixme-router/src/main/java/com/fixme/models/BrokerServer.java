@@ -13,6 +13,7 @@ public class BrokerServer
 {
     private int uniqueID = 100_000;
     private ByteBuffer bb = null;
+    private String del = "" + (char)1;
 
     public BrokerServer() throws IOException {
         int[] ports = {5000,5001};
@@ -46,7 +47,7 @@ public class BrokerServer
                             bb = ByteBuffer.wrap(id.getBytes());
                             sc.write(bb);
                             brokerChannels.put(id, sc);
-                            System.out.println("Connection Accepted: " + sc.getLocalAddress() + "\n"+brokerChannels.size());
+                            System.out.println("Connection Accepted: " + sc.getLocalAddress());
                             break;
                         case 5001:
                             sc.register(selector, SelectionKey.OP_READ);
@@ -54,7 +55,7 @@ public class BrokerServer
                             bb = ByteBuffer.wrap(id.getBytes());
                             sc.write(bb);
                             marketChannels.put(id, sc);
-                            System.out.println("Connection Accepted: " + sc.getLocalAddress() + "\n"+marketChannels.size());
+                            System.out.println("Connection Accepted: " + sc.getLocalAddress());
                             break;
                     }
                 }
@@ -67,9 +68,26 @@ public class BrokerServer
                             bb = ByteBuffer.allocate(1024);
                             sc.read(bb);
                             result = new String(bb.array()).trim();
-                            System.out.println("BrokerServer received a msg: " + result);
-                            if (result.matches("q")){
-                                //do something
+
+                            if (removeClient(result)){
+                                String key = result.split(del)[0];
+                                brokerChannels.remove(key);
+                                sc.close();
+                            }
+                            else{
+                                //checksum check!!!!
+                                bb = ByteBuffer.wrap(result.getBytes());
+                                SocketChannel desChannel = destinationSocketChannel(marketChannels, result);
+                                if (desChannel != null){
+                                    desChannel.write(bb);
+                                    System.out.println("New message: " + result);
+                                }
+                                else{
+                                    String errorMessage = "ERROR!!";
+                                    bb = ByteBuffer.wrap(errorMessage.getBytes());
+                                    sc.write(bb);
+                                    System.out.println("ERROR!! ID NOT FOUND!!");
+                                }
                             }
                             break;
                         case 5001:
@@ -77,12 +95,13 @@ public class BrokerServer
                             bb = ByteBuffer.allocate(1024);
                             sc.read(bb);
                             result = new String(bb.array()).trim();
-                            System.out.println("BrokerServer received a msg: " + result);
-                            if (result.matches("q")){
-                                //do something
+                            if (removeClient(result)){
+                                String key = result.split(del)[0];
+                                marketChannels.remove(key);
+                                sc.close();
                             }
-                            bb = ByteBuffer.wrap(result.getBytes());
-                            brokerChannels.get("100001").write(bb);
+                            else
+                                System.out.println("New message from market: " + result);
                             break;
                     }
                 }
@@ -91,8 +110,27 @@ public class BrokerServer
         }
     }
 
+    //Get methods
     public int getNewID(){
         uniqueID++;
         return (uniqueID);
+    }
+
+    public boolean removeClient(String result){
+        String q = result.split(del)[1];
+        if (q.trim().toLowerCase().matches("q")){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private SocketChannel destinationSocketChannel(Map<String, SocketChannel> marketChannels, String msg){
+        String[] msgArr = msg.split(del);
+        String marketID = msgArr[5].split("=")[1];
+        if (marketChannels.get(marketID) != null)
+            return (marketChannels.get(marketID));
+        else
+            return null;
     }
 }
