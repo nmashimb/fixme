@@ -54,16 +54,15 @@ public class Broker
             sc.read(bb);
             String result = new String(bb.array()).trim();
             setID(Integer.parseInt(result));
-            System.out.println("connected to port 5000?id: "+result);
+            System.out.println("connected to port 5000?my ID: "+result);
         }
         if (key.isReadable()) {
             SocketChannel sc = (SocketChannel) key.channel();
             ByteBuffer bb = ByteBuffer.allocate(1024);
             sc.read(bb);
             String result = new String(bb.array()).trim();
-            //WHAT DO WE DO WITH MESSAGE
-
-            System.out.println("Message: " + result);
+            //String result = result.split(del)[3].split("=")[1];
+            System.out.println("Response: " + result);
         }
         if (key.isWritable()) {
             System.out.println("Type a message (type r to refresh, q to stop): \n1.Buy\n2.Sell");
@@ -88,17 +87,28 @@ public class Broker
                     String marketID = input.readLine().trim().toLowerCase();
                     System.out.println("Enter price: ");
                     String price = input.readLine().trim().toLowerCase();
-                    instrument = instrument+"-"+price;
+                    instrument = instrument+"-"+price+"-buy";
 
-                    msg = buyMessage(instrument, marketID);
+                    msg = messageToSend(instrument, marketID);
                     ByteBuffer bb = ByteBuffer.wrap(msg.getBytes());
                     sc.write(bb);
                 }
                 else if (msg.trim().toLowerCase().matches("2")) {
-                    
+                    System.out.println("Enter Instrument name: ");
+                    String instrument = input.readLine().trim().toLowerCase();;
+                    System.out.println("Enter Instrument quantity: ");
+                    String quantity = input.readLine().trim().toLowerCase();;
+                    instrument = instrument+"-"+quantity;
+                    System.out.println("Enter market ID: ");
+                    String marketID = input.readLine().trim().toLowerCase();
+                    System.out.println("Enter price: ");
+                    String price = input.readLine().trim().toLowerCase();
+                    instrument = instrument+"-"+price+"-sell";
+
+                    msg = messageToSend(instrument, marketID);
+                    ByteBuffer bb = ByteBuffer.wrap(msg.getBytes());
+                    sc.write(bb);
                 }
-                ByteBuffer bb = ByteBuffer.wrap(msg.getBytes());
-                sc.write(bb);
             }
         }
         return false;
@@ -137,21 +147,12 @@ public class Broker
 	    return crc32.getValue();
     }
     
-    public static String buyMessage(String instrument, String receiverID){
+    public static String messageToSend(String instrument, String receiverID){
         String msg = "id="+getID()+del+fixv+del+"35=D"+del+"55="+instrument+del+"49="+getID()+del+"56="+receiverID+del;;
         long checkSum = getCRC32Checksum(msg.getBytes());
+        //convert checksum
+        //checkSum = checkSum % 9;
         msg = msg + "10="+checkSum+del;
         return msg;
-        /*if (cash > 0)
-            return msg;
-        else
-            return "bye";*/
     }
-
-    /*public static String sellMessage(int dst){
-        String del = "|";
-        String msg = "id="+getID()+del+fixv+del+"35=D"+del+"54=2"+del+"38=2"+del+"44=55"+del+"55=WTCSOCKS"+del;
-        msg += "50="+getID()+del+"49="+getID()+del+"56="+dst+del;
-        return msg;
-    }*/
 }

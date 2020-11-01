@@ -3,22 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="b3c60b5e-bc52-4694-b055-b08d25354d86" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/fixme/fixme-broker/src/main/java/com/broker/models/Broker.java" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-broker/src/main/java/com/broker/models/Broker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixme/fixme-broker/target/classes/com/broker/models/Broker.class" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-broker/target/classes/com/broker/models/Broker.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fixme/fixme-broker/target/fixme-broker-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-broker/target/fixme-broker-1.0-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fixme/fixme-broker/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-broker/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixme/fixme-broker/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-broker/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/instruments.txt" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-market/instruments.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fixme/fixme-market/src/main/java/com/market/models/Market.java" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-market/src/main/java/com/market/models/Market.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/target/classes/com/market/models/Market.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/target/fixme-market-1.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-market/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-market/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/target/classes/com/market/models/Market.class" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-market/target/classes/com/market/models/Market.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/target/fixme-market-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-market/target/fixme-market-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fixme/fixme-market/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-market/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fixme/fixme-router/src/main/java/com/fixme/models/BrokerServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-router/src/main/java/com/fixme/models/BrokerServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fixme/fixme-router/target/classes/com/fixme/models/BrokerServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-router/target/classes/com/fixme/models/BrokerServer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fixme/fixme-router/target/fixme-router-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-router/target/fixme-router-1.0-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fixme/fixme-router/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-router/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixme/fixme-router/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/fixme/fixme-router/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

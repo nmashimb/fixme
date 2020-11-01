@@ -1,4 +1,5 @@
-guitar 100
+guitar 17
 paino  100
 flute  100
 drums  100
+chello 10

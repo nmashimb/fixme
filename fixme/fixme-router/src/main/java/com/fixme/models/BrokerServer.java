@@ -7,7 +7,8 @@ import java.nio.channels.*;
 import java.util.*;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
 public class BrokerServer
 {
@@ -68,25 +69,22 @@ public class BrokerServer
                             bb = ByteBuffer.allocate(1024);
                             sc.read(bb);
                             result = new String(bb.array()).trim();
-
                             if (removeClient(result)){
                                 String key = result.split(del)[0];
                                 brokerChannels.remove(key);
                                 sc.close();
                             }
                             else{
-                                //checksum check!!!!
-                                bb = ByteBuffer.wrap(result.getBytes());
                                 SocketChannel desChannel = destinationSocketChannel(marketChannels, result);
                                 if (desChannel != null){
+                                    bb = ByteBuffer.wrap(result.getBytes());
                                     desChannel.write(bb);
-                                    System.out.println("New message: " + result);
+                                    System.out.println("Broker message: " + result);
                                 }
                                 else{
-                                    String errorMessage = "ERROR!!";
+                                    String errorMessage = "id"+del+"8=FIX.4.4"+del+"35=D"+del+"55=ERROR!! TRY AGAIN"+del;
                                     bb = ByteBuffer.wrap(errorMessage.getBytes());
                                     sc.write(bb);
-                                    System.out.println("ERROR!! ID NOT FOUND!!");
                                 }
                             }
                             break;
@@ -100,8 +98,18 @@ public class BrokerServer
                                 marketChannels.remove(key);
                                 sc.close();
                             }
-                            else
-                                System.out.println("New message from market: " + result);
+                            else{
+                                SocketChannel desChannel = destinationSocketChannel(brokerChannels, result);
+                                if (desChannel != null){
+                                    bb = ByteBuffer.wrap(result.getBytes());
+                                    desChannel.write(bb);
+                                }
+                                else{
+                                    String errorMessage = "id"+del+"8=FIX.4.4"+del+"35=D"+del+"55=ERROR!!"+del;
+                                    bb = ByteBuffer.wrap(errorMessage.getBytes());
+                                    sc.write(bb);
+                                }
+                            }
                             break;
                     }
                 }
@@ -125,10 +133,24 @@ public class BrokerServer
             return false;
     }
 
+    public static long getCRC32Checksum(byte[] bytes) {
+	    Checksum crc32 = new CRC32();
+	    crc32.update(bytes, 0, bytes.length);
+	    return crc32.getValue();
+    }
+
     private SocketChannel destinationSocketChannel(Map<String, SocketChannel> marketChannels, String msg){
         String[] msgArr = msg.split(del);
         String marketID = msgArr[5].split("=")[1];
-        if (marketChannels.get(marketID) != null)
+        String checksum = msgArr[6].split("=")[1];
+        String checksumTwo = "";
+
+        for (int i = 0; i < msgArr.length - 1;i++){
+            checksumTwo = checksumTwo + msgArr[i]+del;
+        }
+        checksumTwo = ""+getCRC32Checksum(checksumTwo.getBytes());
+        //convert checksum
+        if (marketChannels.get(marketID) != null && checksum.matches(checksumTwo))
             return (marketChannels.get(marketID));
         else
             return null;
